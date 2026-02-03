@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Sửa sách</title>
+</head>
+<body>
+<h2>Sửa sách</h2>
+
+<form th:action="@{/books/edit}" method="post" th:object="${book}">
+  <input type="hidden" th:field="*{id}">
+
+  <div>
+    <label>Tiêu đề:</label>
+    <input type="text" th:field="*{title}" required>
+  </div>
+  <div>
+    <label>Tác giả:</label>
+    <input type="text" th:field="*{author}" required>
+  </div>
+
+  <button type="submit">Cập nhật</button>
+</form>
+
+<br>
+<a th:href="@{/books}">Quay lại</a>
+</body>
+</html>
