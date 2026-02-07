@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+  <title>Edit product</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3>Edit Product</h3>
+
+  <form th:action="@{/products/edit}" th:object="${product}"
+        method="post" enctype="multipart/form-data">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input class="form-control" type="text" th:field="*{name}">
+      <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input class="form-control" type="number" th:field="*{price}">
+      <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Current image</label><br>
+      <img th:if="${product.image != null}" th:src="@{'/images/' + ${product.image}}"
+           style="width:160px;height:100px;object-fit:cover">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">New image (optional)</label>
+      <input class="form-control" type="file" name="imageProduct" accept="image/*">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <select class="form-control" name="category.id">
+        <option th:each="c : ${categories}"
+                th:value="${c.id}"
+                th:text="${c.name}"
+                th:selected="${product.category != null and product.category.id == c.id}">
+        </option>
+      </select>
+    </div>
+
+    <button class="btn btn-success" type="submit">Save</button>
+    <a class="btn btn-secondary" th:href="@{/products}">Back</a>
+  </form>
+</div>
+</body>
+</html>

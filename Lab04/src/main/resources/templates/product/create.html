@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+  <title>Create product</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3>Create Product</h3>
+
+  <form th:action="@{/products/create}" th:object="${product}"
+        method="post" enctype="multipart/form-data">
+
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input class="form-control" type="text" th:field="*{name}" placeholder="product Name">
+      <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input class="form-control" type="number" th:field="*{price}" placeholder="price">
+      <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Image</label>
+      <input class="form-control" type="file" name="imageProduct" accept="image/*">
+      <div class="text-danger" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <select class="form-control" id="category" name="category.id">
+        <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+      </select>
+    </div>
+
+    <button class="btn btn-success" type="submit">Add Product</button>
+  </form>
+</div>
+</body>
+</html>
