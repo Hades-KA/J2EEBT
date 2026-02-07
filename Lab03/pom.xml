@@ -19,22 +19,26 @@
 
   <properties>
     <java.version>17</java.version>
+    <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
   </properties>
 
   <dependencies>
-    <!-- Web + REST + Tomcat + JSON -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <!-- Thymeleaf templates -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
 
-    <!-- Test -->
+    <dependency>
+      <groupId>nz.net.ultraq.thymeleaf</groupId>
+      <artifactId>thymeleaf-layout-dialect</artifactId>
+      <version>${thymeleaf-layout-dialect.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
