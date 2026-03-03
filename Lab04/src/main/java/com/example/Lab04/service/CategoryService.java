@@ -1,23 +1,25 @@
 package com.example.Lab04.service;
 
-import org.springframework.stereotype.Service;
 import com.example.Lab04.model.Category;
+import com.example.Lab04.repository.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CategoryService {
-    private final List<Category> categories = List.of(
-            new Category(1, "Laptop"),
-            new Category(2, "Điện thoại"),
-            new Category(3, "Phụ kiện")
-    );
+
+    private final CategoryRepository repo;
+
+    public CategoryService(CategoryRepository repo) {
+        this.repo = repo;
+    }
 
     public List<Category> getAll() {
-        return categories;
+        return repo.findAll();
     }
 
     public Category getById(int id) {
-        return categories.stream().filter(c -> c.getId() == id).findFirst().orElse(null);
+        return repo.findById(id).orElse(null);
     }
 }

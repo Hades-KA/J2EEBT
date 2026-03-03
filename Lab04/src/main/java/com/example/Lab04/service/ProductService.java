@@ -1,8 +1,9 @@
 package com.example.Lab04.service;
 
+import com.example.Lab04.model.Product;
+import com.example.Lab04.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.Lab04.model.Product;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -10,34 +11,31 @@ import java.util.*;
 
 @Service
 public class ProductService {
-    private final List<Product> listProduct = new ArrayList<>();
+
+    private final ProductRepository repo;
+
+    public ProductService(ProductRepository repo) {
+        this.repo = repo;
+    }
 
     public List<Product> getAll() {
-        return listProduct;
+        return repo.findAll();
     }
 
     public Product get(int id) {
-        return listProduct.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
+        return repo.findById(id).orElse(null);
     }
 
     public void add(Product newProduct) {
-        int maxId = listProduct.stream().mapToInt(Product::getId).max().orElse(0);
-        newProduct.setId(maxId + 1);
-        listProduct.add(newProduct);
+        repo.save(newProduct);
     }
 
     public void update(Product editProduct) {
-        Product found = get(editProduct.getId());
-        if (found != null) {
-            found.setName(editProduct.getName());
-            found.setPrice(editProduct.getPrice());
-            found.setCategory(editProduct.getCategory());
-            if (editProduct.getImage() != null) found.setImage(editProduct.getImage());
-        }
+        repo.save(editProduct);
     }
 
     public void delete(int id) {
-        listProduct.removeIf(p -> p.getId() == id);
+        repo.deleteById(id);
     }
 
     public void updateImage(Product product, MultipartFile imageProduct) {

@@ -1,5 +1,9 @@
 package com.example.Lab04.controller;
 
+import com.example.Lab04.model.Category;
+import com.example.Lab04.model.Product;
+import com.example.Lab04.service.CategoryService;
+import com.example.Lab04.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,10 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.Lab04.model.Category;
-import com.example.Lab04.model.Product;
-import com.example.Lab04.service.CategoryService;
-import com.example.Lab04.service.ProductService;
 
 @Controller
 @RequestMapping("/products")
@@ -21,15 +21,15 @@ public class ProductController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("listProduct", productService.getAll());
-        return "product/products";
+        model.addAttribute("listProduct", productService.getAll()); // khớp products.html
+        return "product/products"; // khớp templates/product/products.html
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("product", new Product());
         model.addAttribute("categories", categoryService.getAll());
-        return "product/create";
+        return "product/create"; // khớp create.html
     }
 
     @PostMapping("/create")
@@ -77,14 +77,19 @@ public class ProductController {
             return "product/edit";
         }
 
+        Product old = productService.get(editProduct.getId());
+        if (old == null) return "error/404";
+
         Category selected = categoryService.getById(categoryId);
         editProduct.setCategory(selected);
 
         if (imageProduct != null && !imageProduct.isEmpty()) {
             productService.updateImage(editProduct, imageProduct);
+        } else {
+            editProduct.setImage(old.getImage());
         }
-        productService.update(editProduct);
 
+        productService.update(editProduct);
         return "redirect:/products";
     }
 
