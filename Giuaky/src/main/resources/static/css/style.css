@@ -1,0 +1,36 @@
+body {
+    background: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.page-title {
+    font-weight: 700;
+}
+
+.course-card {
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+}
+
+.course-image {
+    height: 220px;
+    object-fit: cover;
+}
+
+.auth-card {
+    border: none;
+    border-radius: 16px;
+}
+
+.table img {
+    object-fit: cover;
+    border-radius: 8px;
+}
