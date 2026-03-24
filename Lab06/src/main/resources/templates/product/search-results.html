@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Kết quả tìm kiếm</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>
+            Kết quả tìm kiếm: "<span th:text="${searchKey}"></span>"
+            <small class="text-muted" th:text="'(' + ${listProduct.size()} + ' kết quả)'"></small>
+        </h3>
+
+        <a class="btn btn-secondary" th:href="@{/products}">← Quay lại danh sách</a>
+    </div>
+
+    <div class="alert alert-warning mt-3" th:if="${listProduct.isEmpty()}">
+        Không tìm thấy sản phẩm nào với từ khóa "<span th:text="${searchKey}"></span>"
+    </div>
+
+    <table class="table table-bordered table-striped mt-3" th:if="${!listProduct.isEmpty()}">
+        <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Hình ảnh</th>
+            <th>Danh mục</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="p : ${listProduct}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.name}"></td>
+            <td>
+                <span th:text="${#numbers.formatInteger(p.price, 0, 'COMMA')}"></span> đ
+            </td>
+            <td>
+                <img th:if="${p.image != null and p.image.startsWith('http')}"
+                     th:src="${p.image}"
+                     style="width:120px;height:80px;object-fit:cover" alt="Ảnh sản phẩm">
+                <img th:if="${p.image != null and !p.image.startsWith('http')}"
+                     th:src="@{'/images/' + ${p.image}}"
+                     style="width:120px;height:80px;object-fit:cover" alt="Ảnh sản phẩm">
+            </td>
+            <td th:text="${p.category != null ? p.category.name : ''}"></td>
+
+            <td>
+                <div class="d-flex gap-2">
+                    <a sec:authorize="hasRole('ADMIN')"
+                       class="btn btn-sm btn-warning"
+                       th:href="@{/products/edit/{id}(id=${p.id})}">Sửa</a>
+
+                    <form sec:authorize="hasRole('ADMIN')"
+                          th:action="@{/products/delete/{id}(id=${p.id})}"
+                          method="post"
+                          onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="btn btn-sm btn-danger" type="submit">Xóa</button>
+                    </form>
+
+                    <form sec:authorize="hasRole('USER')"
+                          th:action="@{/cart/add/{id}(id=${p.id})}"
+                          method="post" style="display:inline">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button class="btn btn-sm btn-info" type="submit">🛒 Thêm vào giỏ</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

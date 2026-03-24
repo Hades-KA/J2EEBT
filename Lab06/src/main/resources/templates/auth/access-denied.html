@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Từ chối truy cập</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h3>403 - Từ chối truy cập</h3>
+    <p>Bạn không có quyền truy cập chức năng này.</p>
+    <a class="btn btn-secondary" th:href="@{/products}">Quay lại</a>
+</div>
+</body>
+</html>
